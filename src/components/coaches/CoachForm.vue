@@ -4,7 +4,7 @@
       <label for="firstname">Firstname</label>
       <input
         type="text"
-        id=" firstname"
+        id="firstname"
         v-model.trim="firstName.val"
         @blur="clearValidity('firstName')"
       />
@@ -14,7 +14,7 @@
       <label for="lastname">Lastname</label>
       <input
         type="text"
-        id=" lastname"
+        id="lastname"
         v-model.trim="lastName.val"
         @blur="clearValidity('lastName')"
       />
@@ -38,7 +38,7 @@
         v-model.number="rate.val"
         @blur="clearValidity('rate')"
       />
-      <p v-if="!rate.isValid">Rate must not be greater than 0.</p>
+      <p v-if="!rate.isValid">Rate must be greater than 0.</p>
     </div>
     <div class="form-control" :class="{ invalid: !areas.isValid }">
       <h3>Areas of Expertise</h3>
@@ -74,7 +74,7 @@
       </div>
       <p v-if="!areas.isValid">At least one expertise must be selected.</p>
     </div>
-    <p v-if="!formIsValid">Please fix the above error and submit again.</p>
+    <p v-if="!formIsValid">Please fix the above errors and submit again.</p>
     <base-button>Register</base-button>
   </form>
 </template>
@@ -96,12 +96,12 @@ export default {
         val: '',
         isValid: true
       },
-      areas: {
-        val: [],
-        isValid: true
-      },
       rate: {
         val: null,
+        isValid: true
+      },
+      areas: {
+        val: [],
         isValid: true
       },
       formIsValid: true
@@ -125,7 +125,7 @@ export default {
         this.description.isValid = false;
         this.formIsValid = false;
       }
-      if (this.rate.val || this.rate.val < 0) {
+      if (!this.rate.val || this.rate.val < 0) {
         this.rate.isValid = false;
         this.formIsValid = false;
       }
@@ -136,6 +136,7 @@ export default {
     },
     submitForm() {
       this.validateForm();
+
       if (!this.formIsValid) {
         return;
       }
@@ -147,6 +148,7 @@ export default {
         rate: this.rate.val,
         areas: this.areas.val
       };
+
       this.$emit('save-data', formData);
     }
   }
